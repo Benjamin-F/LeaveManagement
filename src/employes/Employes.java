@@ -35,7 +35,11 @@ public class Employes {
 		
 		if(pass == null)
 			return false;
-		else 
-			return true;
+		else{
+			if(pass.equals(pwd))
+				return true;
+			else
+				return false;
+		}
 	}
 }

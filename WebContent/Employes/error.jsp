@@ -9,6 +9,6 @@
 <body>
 <h2> Error page </h2>
 <p>An error occurred, wrong login/password.</p>
-<p><a href="index.jsp">Please try again.</a></p>
+<p><a href="/LeaveManagement/Employes/index.jsp">Please try again.</a></p>
 </body>
 </html>
