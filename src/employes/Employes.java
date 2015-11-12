@@ -4,26 +4,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Employes {
-	private static Employes instance = null;
 	
 	private Map <String, String> employe;
 	
 	/**
 	 * Constructeur
 	 */
-	private Employes(){
+	public Employes(){
 		super();
-		
 		employe = new HashMap<String, String>();
-	}
-	
-	/**
-	* @return une instance de Employe
-	*/
-	public static Employes instance(){
-		if(instance==null)
-			instance = new Employes();
-		return instance;
 	}
 	
 	/**

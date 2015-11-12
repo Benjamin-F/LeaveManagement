@@ -12,12 +12,12 @@
 
 			<div>
 				<p>Login:</p>
-				<input type="text" name="firstName"></input>
+				<input type="text" name="login"></input>
 			</div>
 			
 			<div>
 				<p>Password:</p>
-				<input type="password" name="lastName"></input>
+				<input type="password" name="pwd"></input>
 			</div>
 			
 			<p><input name="mySubmit" type="submit" value="Valider" /></p>
