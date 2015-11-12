@@ -28,7 +28,7 @@ public class AuthentificationServlet extends HttpServlet {
     public AuthentificationServlet() {
         
     	super();
-    	myEmployes = new Employes();
+    	myEmployes = Employes.instance();
     	myEmployes.addEmploye("coucou", "hello");
     }
 

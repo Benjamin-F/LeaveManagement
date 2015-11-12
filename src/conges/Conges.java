@@ -1,18 +1,28 @@
 package conges;
 
 public class Conges {	
+	private static Conges instance = null;
 	private Boolean jours [] ;
 	
 	/**
 	* Constructeur public
 	*/
-	public Conges(){
+	private Conges(){
 		//Tableau de congés
 		jours = new Boolean [365];
 		
 		//Init à true
 		for (int i=0; i<jours.length; i++)
 			jours[i]=Boolean.TRUE;
+	}
+	
+	/**
+	* @return une instance de Conge
+	*/
+	public static Conges instance(){
+		if(instance==null)
+			instance = new Conges();
+		return instance;
 	}
 	
 	

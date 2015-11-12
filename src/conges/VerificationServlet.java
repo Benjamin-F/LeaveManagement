@@ -25,14 +25,14 @@ public class VerificationServlet extends HttpServlet {
 	static String PAGE_HEADER = "<html><meta http-equiv='Content-Type' content='text/html; charset=utf-8'/><head><title>helloworld</title><body>";
 	static String PAGE_FOOTER = "</body></html>";
 	
-	Conges myConges = null;
-       
+	Conges myConges;
+   
     /**
      * @see HttpServlet#HttpServlet()
      */
     public VerificationServlet() {
         super();
-        myConges = new Conges();
+        myConges = Conges.instance();
     }
 
 	/**

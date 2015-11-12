@@ -7,14 +7,15 @@
 		<title>Insert title here</title>
 	</head>
 	<body>
-		<h2>Leave status</h2>
 		<% 	
 			Boolean booked = (Boolean)request.getAttribute("booked"); 
 			if(booked){
+				out.println("<h2>Leave status : Success</h2>");
 				out.println("<p>Your leave day have been successfuly saved</p>");
 				out.println("<p><a href='/LeaveManagement/Conges/demandeConge.jsp'>Set another day.</a></p>");
 			}
 			else{
+				out.println("<h2>Leave status : Failure</h2>");
 				out.println("<p>You can't set a leave day for this date.</p>");
 				out.println("<p><a href='/LeaveManagement/Conges/demandeConge.jsp'>Try again.</a></p>");
 			}
