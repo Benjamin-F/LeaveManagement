@@ -20,7 +20,7 @@ public class AuthentificationServlet extends HttpServlet {
 	
 	static String PAGE_HEADER = "<html><meta http-equiv='Content-Type' content='text/html; charset=utf-8'/><head><title>helloworld</title><body>";
 	static String PAGE_FOOTER = "</body></html>";
-	Employes myEmployes = new Employes();
+	Employes myEmployes = null;
        
     /**
      * @see HttpServlet#HttpServlet()
@@ -28,6 +28,7 @@ public class AuthentificationServlet extends HttpServlet {
     public AuthentificationServlet() {
         
     	super();
+    	myEmployes = new Employes();
     	myEmployes.addEmploye("coucou", "hello");
     }
 
@@ -52,8 +53,11 @@ public class AuthentificationServlet extends HttpServlet {
 		
 		Boolean credential = myEmployes.checkCredentials(request.getParameter("login"), request.getParameter("pwd"));
 		
-		if(credential)
+		if(credential){
 			initSession(session, request.getParameter("login"), request.getParameter("pwd"));
+			RequestDispatcher dispatcher=getServletContext().getRequestDispatcher("/Conges/demandeConge.jsp");
+			dispatcher.include(request, response);
+		}
 		else{
 			RequestDispatcher dispatcher=getServletContext().getRequestDispatcher("/Employes/error.jsp");
 			dispatcher.include(request, response);

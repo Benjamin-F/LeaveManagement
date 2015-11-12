@@ -1,6 +1,14 @@
 package conges;
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -13,13 +21,18 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/VerificationServlet")
 public class VerificationServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	
+	static String PAGE_HEADER = "<html><meta http-equiv='Content-Type' content='text/html; charset=utf-8'/><head><title>helloworld</title><body>";
+	static String PAGE_FOOTER = "</body></html>";
+	
+	Conges myConges = null;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
     public VerificationServlet() {
         super();
-        // TODO Auto-generated constructor stub
+        myConges = new Conges();
     }
 
 	/**
@@ -33,7 +46,46 @@ public class VerificationServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+		//Basics
+		response.setContentType("text/html");
+		PrintWriter writer = response.getWriter();
+		writer.println(PAGE_HEADER);
+		
+		//Convert birth date to Date format
+		String leaveD = request.getParameter("leaveDate");
+		DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		Date date = new Date();
+		try {
+			date = format.parse(leaveD);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		//Get day number
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		int dayNumber = cal.get(Calendar.DAY_OF_YEAR);
+		
+		Boolean booked;
+		Boolean availability = myConges.verifierJour(dayNumber);
+		
+		//Set day
+		if(availability){
+			myConges.poserJour(dayNumber);
+			booked = true;
+		}
+		else
+			booked = false;
+		
+		//Add status to request
+		request.setAttribute("booked", booked);
+		
+		//Redirection
+		RequestDispatcher dispatcher=getServletContext().getRequestDispatcher("/Conges/resultatDemande.jsp");
+		dispatcher.include(request, response);
+	
+		writer.println(PAGE_FOOTER);
+		writer.close();
 	}
 
 }
