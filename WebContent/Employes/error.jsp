@@ -4,9 +4,11 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
+<title>Error</title>
 </head>
 <body>
-
+<h2> Error page </h2>
+<p>An error occurred, wrong login/password.</p>
+<p><a href="index.jsp">Please try again.</a></p>
 </body>
 </html>
