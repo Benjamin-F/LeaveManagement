@@ -51,23 +51,26 @@ public class VerificationServlet extends HttpServlet {
 		PrintWriter writer = response.getWriter();
 		writer.println(PAGE_HEADER);
 		
+		Boolean booked = false;
+		Boolean availability = false;
+		int dayNumber = 0;
+		
 		//Convert birth date to Date format
 		String leaveD = request.getParameter("leaveDate");
 		DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		Date date = new Date();
 		try {
 			date = format.parse(leaveD);
+			//Get day number
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(date);
+			dayNumber = cal.get(Calendar.DAY_OF_YEAR);
+			
+			availability = myConges.verifierJour(dayNumber);
+			
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		
-		//Get day number
-		Calendar cal = Calendar.getInstance();
-		cal.setTime(date);
-		int dayNumber = cal.get(Calendar.DAY_OF_YEAR);
-		
-		Boolean booked;
-		Boolean availability = myConges.verifierJour(dayNumber);
 		
 		//Set day
 		if(availability){

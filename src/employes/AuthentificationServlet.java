@@ -6,6 +6,7 @@ import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -43,8 +44,7 @@ public class AuthentificationServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//Création de la session
-		HttpSession session = request.getSession(true);
+		
 		
 		//Basics
 		response.setContentType("text/html");
@@ -54,24 +54,44 @@ public class AuthentificationServlet extends HttpServlet {
 		Boolean credential = myEmployes.checkCredentials(request.getParameter("login"), request.getParameter("pwd"));
 		
 		if(credential){
-			initSession(session, request.getParameter("login"), request.getParameter("pwd"));
-			RequestDispatcher dispatcher=getServletContext().getRequestDispatcher("/Conges/demandeConge.jsp");
-			dispatcher.include(request, response);
+			initSessionCookies(request, response);
+			response.sendRedirect("/LeaveManagement/Conges/demandeConge.jsp");  
+			//RequestDispatcher dispatcher=getServletContext().getRequestDispatcher("/Conges/demandeConge.jsp");
+			//dispatcher.include(request, response);
 		}
 		else{
-			RequestDispatcher dispatcher=getServletContext().getRequestDispatcher("/Employes/error.jsp");
-			dispatcher.include(request, response);
+			response.sendRedirect("/LeaveManagement/Employes/error.jsp");  
+			//RequestDispatcher dispatcher=getServletContext().getRequestDispatcher("/Employes/error.jsp");
+			//dispatcher.include(request, response);
 		}
 		
 		writer.println(PAGE_FOOTER);
 		writer.close();
 	}
 	
-	protected void initSession(HttpSession session, String login, String pwd){
-		if(session.isNew()){
-			session.setAttribute("login", login);
-			session.setAttribute("pwd", pwd);
-		}
+	/**
+	 * Initialize Session and cookies
+	 * @param request
+	 * @param response
+	 */
+	private static void initSessionCookies(HttpServletRequest request, HttpServletResponse response){
+		//Création de la session
+		HttpSession session = request.getSession();
+		session.setAttribute("login", request.getParameter("login"));
+		session.setAttribute("pwd", request.getParameter("pwd"));
+		session.setMaxInactiveInterval(50);
+		
+		//Cookies
+		Cookie loginCookie = new Cookie("login", request.getParameter("login"));
+		Cookie pwdCookie = new Cookie("pwd", request.getParameter("pwd"));
+		
+		//Tps vie cookie, 4j
+		loginCookie.setMaxAge(90);
+		pwdCookie.setMaxAge(90);
+		
+		
+		//Ajout des cookies
+		response.addCookie(loginCookie);
+		response.addCookie(pwdCookie);
 	}
-
 }
