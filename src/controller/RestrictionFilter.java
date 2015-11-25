@@ -52,6 +52,7 @@ public class RestrictionFilter implements Filter {
 			if(session.getAttribute(ATT_SESSION_USER)==null){
 				String login = AuthentificationServlet.getCookieValue(request, this.COOKIE_CONNEXION_LOGIN);
 				session.setAttribute(this.ATT_SESSION_USER, login);
+				session.setMaxInactiveInterval(50);
 			}
 			chain.doFilter(request, response);
 		}
