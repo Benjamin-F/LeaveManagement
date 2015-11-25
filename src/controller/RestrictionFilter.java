@@ -13,13 +13,14 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
- * Servlet Filter implementation class PrivateFilter
+ * Servlet Filter implementation class RestrictionFilter
  */
 @WebFilter("/RestrictionFilter")
 public class RestrictionFilter implements Filter {
 
-	private static final String ATT_SESSION_USER="sessionUtilisateur";
-    /**
+    private static final String ATT_SESSION_USER = "sessionUtilisateur";
+
+	/**
      * Default constructor. 
      */
     public RestrictionFilter() {
@@ -37,20 +38,17 @@ public class RestrictionFilter implements Filter {
 	 * @see Filter#doFilter(ServletRequest, ServletResponse, FilterChain)
 	 */
 	public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
-		/* Cast des objets request et response */
+		 HttpServletRequest request = (HttpServletRequest) req;
 
-        HttpServletRequest request = (HttpServletRequest) req;
-
-        HttpServletResponse response = (HttpServletResponse) res;
-        HttpSession session= request.getSession();
-		if (session.getAttribute(ATT_SESSION_USER)==null) {
-			response.sendRedirect("/LeaveManagement/Employes/index.jsp");
-			
-		}
-		else{
-			chain.doFilter(request, response);
-		}
-	
+	        HttpServletResponse response = (HttpServletResponse) res;
+	        HttpSession session= request.getSession();
+			if (session.getAttribute(ATT_SESSION_USER)==null) {
+				response.sendRedirect("/LeaveManagement/Employes/index.jsp");
+				
+			}
+			else{
+				chain.doFilter(request, response);
+			}
 		
 	}
 

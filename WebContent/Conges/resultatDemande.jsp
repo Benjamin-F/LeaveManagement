@@ -9,29 +9,10 @@
 	</head>
 	<body>
 		<% 
-			String login = null;
 		
-			//Get cookies
-			Cookie[] cookies = request.getCookies();
+	
+				String login = (String) session.getAttribute("sessionUtilisateur");
 			
-			//We check cookies to reset session
-			if(cookies !=null){
-				for(Cookie cookie : cookies){
-			  		if(cookie.getName().equals("login")) 
-			  			session.setAttribute("login", cookie.getValue());
-			  		if(cookie.getName().equals("pwd")) 
-			  			session.setAttribute("pwd", cookie.getValue());
-				}
-			}
-			
-			//If session doesn't exist
-			if(session.getAttribute("login") == null){
-				%>
-			  	<jsp:forward page="/Employes/index.jsp" />
-			  	<%
-			}else{
-				login = (String) session.getAttribute("login");
-			}
 		
 		
 			//Check

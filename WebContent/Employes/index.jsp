@@ -20,8 +20,13 @@
 				<p>Password:</p>
 				<input type="password" name="pwd"></input>
 			</div>
+			<div>
+			 <label for="useCookies">Se souvenir de moi</label>
+                <input type="checkbox" id="useCookies" name="useCookies" />	
+			</div>
+			<p><input name="mySubmit" type="submit" value="Valider" /></p>
 			
-			<p><input name="mySubmit" type="submit" value="Valider" /></p>		
+			
 		</form>
 	</body>
 </html>

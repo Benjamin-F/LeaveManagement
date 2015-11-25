@@ -5,7 +5,9 @@ import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -24,106 +26,131 @@ import model.Employes;
 @WebServlet("/AuthentificationServlet")
 public class AuthentificationServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private static String ATT_SESSION_USER="sessionUtilisateur";
-	static String PAGE_HEADER = "<html><meta http-equiv='Content-Type' content='text/html; charset=utf-8'/><head><title>helloworld</title><body>";
-	static String PAGE_FOOTER = "</body></html>";
+	private static final String ATT_SESSION_USER = "sessionUtilisateur";
+	private static final int MAX_AGE_COOKIES = 60 * 60 * 24 * 4;// 4 jours
+	private static final String COOKIES_YES_OR_NO = "useCookies";
+	public static final String COOKIE_CONNEXION_PWD = "conpwd";
+	public static final String COOKIE_CONNEXION_LOGIN= "conl";
+
+	public static final String FORMAT_DATE = "dd/MM/yyyy HH:mm:ss";
 	Employes myEmployes = null;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public AuthentificationServlet() {
-        
-    	super();
-    	myEmployes = Employes.instance();
-    	myEmployes.addEmploye("coucou", "hello");
-    }
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#HttpServlet()
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+	public AuthentificationServlet() {
+
+		super();
+		myEmployes = Employes.instance();
+		myEmployes.addEmploye("coucou", "hello");
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-	
-		String login=request.getParameter("login");
-		String pwd=request.getParameter("pwd");
-		
-		Boolean credential = myEmployes.checkCredentials(login,pwd );
-		HttpSession session = request.getSession();
-
-		if(credential){
-//			initSessionCookies(request, response);
-			//initSession(login,pwd,request,response);
-			session.setAttribute(this.ATT_SESSION_USER,login);
-			response.sendRedirect("/LeaveManagement/Conges/demandeConge.jsp"); 
-			//this.getServletContext().getRequestDispatcher("/Conges/demandeConge.jsp").forward(request, response);
-		}
-		else{
-			session.setAttribute(this.ATT_SESSION_USER, null);
-			response.sendRedirect("/LeaveManagement/Employes/error.jsp");  
-			//RequestDispatcher dispatcher=getServletContext().getRequestDispatcher("/Employes/error.jsp");
-			//dispatcher.include(request, response);
-		}
-		
-	}
-//	private void initSession(String login,String pwd,HttpServletRequest request, HttpServletResponse response){
-//		//Création de la session
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+//        String log = getCookieValue( request, this.COOKIE_CONNEXION_LOGIN );
+//        String pwd= getCookieValue( request, this.COOKIE_CONNEXION_PWD);
+//        /* Si le cookie existe, alors calcul de la durée */
+//    	Boolean credential = myEmployes.checkCredentials(log, pwd);
 //		HttpSession session = request.getSession();
-//		String sessionNumber=null;
-//		try {
-//			sessionNumber = createSessionNumber(login,pwd);
-//		} catch (NoSuchAlgorithmException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} catch (UnsupportedEncodingException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		session.setAttribute("sessionUtilisateur",sessionNumber);
-//			
-//	}
-//	private  String createSessionNumber(String login,String password) throws NoSuchAlgorithmException, UnsupportedEncodingException {
-//		MessageDigest digest = MessageDigest.getInstance("SHA-256");
-//		digest.reset();
-//		//Pour créer le numéro de session on utilise la date le login et le pwd
-//		
-//		digest.update((login+"bfeg"+Calendar.getInstance().toString()).getBytes());
-//		byte[] input = digest.digest((password+login+Calendar.getInstance().toString()).getBytes("UTF-8"));
-//		digest.reset();
-//		input = digest.digest(input);
-//		return input.toString();
-//	}
+//        if ( log != null && pwd !=null ) {
+//
+//        	//On vérifie les infos de connexions
+//    		if (credential) {
+//
+//    			session.setAttribute(this.ATT_SESSION_USER, log);
+//
+//    			response.sendRedirect("/LeaveManagement/Conges/demandeConge.jsp");
+//
+//    		} else {
+//    			session.setAttribute(this.ATT_SESSION_USER, null);
+//    			response.sendRedirect("/LeaveManagement/Employes/error.jsp");
+//
+//    		}
+//
+//        }
+	}
+
 	/**
-	 * Initialize Session and cookies
-	 * @param request
-	 * @param response
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	private static void initSessionCookies(HttpServletRequest request, HttpServletResponse response){
-		//Création de la session
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
+		String login = request.getParameter("login");
+		String pwd = request.getParameter("pwd");
+
+		Boolean credential = myEmployes.checkCredentials(login, pwd);
 		HttpSession session = request.getSession();
 		
-		session.setAttribute("login", request.getParameter("login"));
-		session.setAttribute("pwd", request.getParameter("pwd"));
-		session.setMaxInactiveInterval(50);
+		//On vérifie si l'utilisateur souhaite des cookies
+		if (request.getParameter(this.COOKIES_YES_OR_NO) != null) {
+			/* Récupération de la date courante */
+			Date dt = Calendar.getInstance().getTime();
+			/* Formatage de la date et conversion en texte */
+			SimpleDateFormat dateFormat = new SimpleDateFormat(FORMAT_DATE);
+			String dateConnexion = dateFormat.format(dt);
+
+			/* Création du cookie, et ajout à la réponse HTTP */
+			setCookie(response, this.COOKIE_CONNEXION_PWD, pwd, MAX_AGE_COOKIES);
+			setCookie(response, this.COOKIE_CONNEXION_LOGIN, login, MAX_AGE_COOKIES);
+		} else {
+			//age 0 pour un cookie le détruit
+			setCookie(response, this.COOKIE_CONNEXION_PWD, "", 0);
+			setCookie(response, this.COOKIE_CONNEXION_LOGIN, "", 0);
+		}
 		
-		//Cookies
-		Cookie loginCookie = new Cookie("login", request.getParameter("login"));
-		Cookie pwdCookie = new Cookie("pwd", request.getParameter("pwd"));
-		
-		//Tps vie cookie, 4j
-		loginCookie.setMaxAge(90);
-		pwdCookie.setMaxAge(90);
-		
-		
-		//Ajout des cookies
-		response.addCookie(loginCookie);
-		response.addCookie(pwdCookie);
+		//On vérifie les infos de connexions
+		if (credential) {
+
+			session.setAttribute(this.ATT_SESSION_USER, login);
+
+			response.sendRedirect("/LeaveManagement/Conges/demandeConge.jsp");
+
+		} else {
+			session.setAttribute(this.ATT_SESSION_USER, null);
+			response.sendRedirect("/LeaveManagement/Employes/error.jsp");
+
+		}
+
 	}
+
+	/*
+	 * Initialisation de notre cookie
+	 */
+	private static void setCookie(HttpServletResponse response, String nom, String valeur, int maxAge) {
+
+		Cookie cookie = new Cookie(nom, valeur);
+
+		cookie.setMaxAge(maxAge);
+
+		response.addCookie(cookie);
+
+	}
+	 private static String getCookieValue( HttpServletRequest request, String nom ) {
+
+	        Cookie[] cookies = request.getCookies();
+
+	        if ( cookies != null ) {
+
+	            for ( Cookie cookie : cookies ) {
+
+	                if ( cookie != null && nom.equals( cookie.getName() ) ) {
+
+	                    return cookie.getValue();
+
+	                }
+
+	            }
+
+	        }
+
+	        return null;
+
+	    }
+
 }
