@@ -37,13 +37,13 @@
 		   		<div class="col-md-offset-5 col-md-4" style="margin-top: 10%;">
 		   			<% if(booked){ %>
 		   			<div class="alert alert-success" role="alert">
-		   				<p><%=statusMessage %><a href='/LeaveManagement/Conges/demandeConge.jsp'><br/>Set another day.</a></p>
+		   				<p><%=statusMessage %><br/><a href='/LeaveManagement/Conges/demandeConge.jsp'>Set another day.</a></p>
 		   			</div>
 		   			<%}
 		   			else{
 		   				%>
 		   				<div class="alert alert-danger" role="alert">
-		   					<p><%=statusMessage %><a href='/LeaveManagement/Conges/demandeConge.jsp'><br/>Try again.</a></p>
+		   					<p><%=statusMessage %><br/><a href='/LeaveManagement/Conges/demandeConge.jsp'>Try again.</a></p>
 		   				</div>
 		   				<%
 		   			}

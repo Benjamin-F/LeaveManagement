@@ -38,7 +38,7 @@
 					
 						<form action="/LeaveManagement/VerificationServlet" method="post">
 							<div>
-								<input class="form-control input-sm chat-input" type="date" name="leaveDate" min="1900-01-02"></input>
+								<input class="form-control input-sm chat-input" name="leaveDate" placeholder="jj/mm/yyyy"></input>
 							</div>
 							<br/>
 							<p class="wrapper" ><input class="btn btn-primary btn-md" name="mySubmit" type="submit" value="Valider" /></p>

@@ -60,7 +60,7 @@ public class VerificationServlet extends HttpServlet {
 		
 		//Convert birth date to Date format
 		String leaveD = request.getParameter("leaveDate");
-		DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 		Date date = new Date();
 		try {
 			date = format.parse(leaveD);
