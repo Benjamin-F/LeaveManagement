@@ -43,6 +43,14 @@ public class DeconnexionServlet extends HttpServlet {
         /* Redirection vers l'index */
         response.sendRedirect( "/LeaveManagement/Employes/index.jsp" );
 	}
+	
+	/**
+	 * Erase cookie
+	 * @param response
+	 * @param nom
+	 * @param valeur
+	 * @param maxAge
+	 */
 	private static void setCookie(HttpServletResponse response, String nom, String valeur, int maxAge) {
 
 		Cookie cookie = new Cookie(nom, valeur);

@@ -26,8 +26,9 @@ public class Employes implements Serializable{
 	}
 
 	/**
-	* @return une instance de Employe
-	*/
+	 * Instance
+	 * @return une instance de Employe
+	 */
 	public static Employes instance(){
 		if(instance==null)
 		instance = new Employes();

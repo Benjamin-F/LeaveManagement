@@ -17,6 +17,7 @@ public class Conges {
 	}
 	
 	/**
+	 * Instance
 	* @return une instance de Conge
 	*/
 	public static Conges instance(){
@@ -27,6 +28,7 @@ public class Conges {
 	
 	
 	/**
+	 * Vérifie la dispo du jour
 	* @param jour du congé
 	* @return vrai si le jour est dispo false si le jour est pris ou la valeur de jour n'est pas valide
 	*/

@@ -51,27 +51,7 @@ public class AuthentificationServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-//        String log = getCookieValue( request, this.COOKIE_CONNEXION_LOGIN );
-//        String pwd= getCookieValue( request, this.COOKIE_CONNEXION_PWD);
-//        /* Si le cookie existe, alors calcul de la durée */
-//    	Boolean credential = myEmployes.checkCredentials(log, pwd);
-//		HttpSession session = request.getSession();
-//        if ( log != null && pwd !=null ) {
-//
-//        	//On vérifie les infos de connexions
-//    		if (credential) {
-//
-//    			session.setAttribute(this.ATT_SESSION_USER, log);
-//
-//    			response.sendRedirect("/LeaveManagement/Conges/demandeConge.jsp");
-//
-//    		} else {
-//    			session.setAttribute(this.ATT_SESSION_USER, null);
-//    			response.sendRedirect("/LeaveManagement/Employes/error.jsp");
-//
-//    		}
-//
-//        }
+
 	}
 
 	/**
@@ -119,8 +99,12 @@ public class AuthentificationServlet extends HttpServlet {
 
 	}
 
-	/*
-	 * Initialisation de notre cookie
+	/**
+	 * set cookie
+	 * @param response
+	 * @param nom
+	 * @param valeur
+	 * @param maxAge
 	 */
 	private static void setCookie(HttpServletResponse response, String nom, String valeur, int maxAge) {
 
@@ -132,6 +116,12 @@ public class AuthentificationServlet extends HttpServlet {
 
 	}
 	
+	/**
+	 * Get cookie
+	 * @param request
+	 * @param nom
+	 * @return
+	 */
 	public static String getCookieValue( HttpServletRequest request, String nom ) {
     	Cookie[] cookies = request.getCookies();
     	
