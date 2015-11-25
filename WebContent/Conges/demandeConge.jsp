@@ -12,27 +12,8 @@
 		<%
 			String login = null;
 		
-			//Get cookies
-			Cookie[] cookies = request.getCookies();
+				login = (String) session.getAttribute("sessionUtilisateur");
 			
-			//We check cookies to reset session
-			if(cookies !=null){
-				for(Cookie cookie : cookies){
-			  		if(cookie.getName().equals("login")) 
-			  			session.setAttribute("login", cookie.getValue());
-			  		if(cookie.getName().equals("pwd")) 
-			  			session.setAttribute("pwd", cookie.getValue());
-				}
-			}
-			
-			//If session doesn't exist
-			if(session.getAttribute("login") == null || session.getAttribute("login") == ""){
-				%>
-			  	<jsp:forward page="/Employes/index.jsp" />
-			  	<%
-			}else{
-				login = (String) session.getAttribute("login");
-			}
 			
 		%>	
 		<h2>You're authenticated as <%=login %></h2>
@@ -47,7 +28,7 @@
 			<p><input name="mySubmit" type="submit" value="Valider" /></p>
 		</form>
 		
-		<form method="link" action="/LeaveManagement/Employes/index.jsp">
+		<form method="link" action="/LeaveManagement/DeconnexionServlet">
     		<input type="submit" value="Logout"/>
 		</form>
 		

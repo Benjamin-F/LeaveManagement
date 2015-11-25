@@ -1,4 +1,4 @@
-package conges;
+package model;
 
 public class Conges {	
 	private static Conges instance = null;

@@ -1,5 +1,6 @@
-package employes;
+package model;
 
+import java.io.Serializable;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -10,7 +11,7 @@ import java.util.Map;
 
 
 
-public class Employes {
+public class Employes implements Serializable{
 
 	private static Employes instance = null;
 	private Map <String, byte[]> employe;
