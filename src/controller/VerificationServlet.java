@@ -53,6 +53,7 @@ public class VerificationServlet extends HttpServlet {
 		PrintWriter writer = response.getWriter();
 		writer.println(PAGE_HEADER);
 		
+		String statusMessage = null; 
 		Boolean booked = false;
 		Boolean availability = false;
 		int dayNumber = 0;
@@ -72,23 +73,29 @@ public class VerificationServlet extends HttpServlet {
 			
 		} catch (ParseException e) {
 			e.printStackTrace();
+			statusMessage = "Incorrect date format.";
 		}
 		
 		//Set day
 		if(availability){
 			myConges.poserJour(dayNumber);
 			booked = true;
+			statusMessage = "Your leave has been successfully registered.";
 		}
-		else
+		else{
 			booked = false;
+			if(statusMessage==null)
+				statusMessage = "Sorry, this date isn't available.";
+		}
 		
 		//Add status to request
 		request.setAttribute("booked", booked);
+		request.setAttribute("statusMessage", statusMessage);
 		
 		//Redirection
 		RequestDispatcher dispatcher=getServletContext().getRequestDispatcher("/Conges/resultatDemande.jsp");
 		dispatcher.include(request, response);
-	
+		
 		writer.println(PAGE_FOOTER);
 		writer.close();
 	}

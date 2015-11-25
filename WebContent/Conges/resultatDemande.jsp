@@ -1,6 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"
 %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<link rel="stylesheet" href="/LeaveManagement/bootstrap/css/bootstrap.min.css">         
+<link rel="stylesheet" href="/LeaveManagement/bootstrap/css/login.css">
+<script src="/LeaveManagement/bootstrap/js/bootstrap.min.js"></script> 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 	<head>
@@ -8,27 +12,44 @@
 		<title>Insert title here</title>
 	</head>
 	<body>
-		<% 
-		
-	
-				String login = (String) session.getAttribute("sessionUtilisateur");
-			
-		
+		<%
+			String login = (String) session.getAttribute("sessionUtilisateur");
 		
 			//Check
 			Boolean booked = (Boolean)request.getAttribute("booked"); 
-			if(booked){
-				out.println("<h2>You're authenticated as "+login+"</h2>");
-				out.println("<h3>Leave status : Success</h3>");
-				out.println("<p>Your leave day have been successfuly saved</p>");
-				out.println("<p><a href='/LeaveManagement/Conges/demandeConge.jsp'>Set another day.</a></p>");
-			}
-			else{
-				out.println("<h2>You're authenticated as "+login+"</h2>");
-				out.println("<h3>Leave status : Failure</h3>");
-				out.println("<p>You can't set a leave day for this date.</p>");
-				out.println("<p><a href='/LeaveManagement/Conges/demandeConge.jsp'>Try again.</a></p>");
-			}	
+			String statusMessage = (String)request.getAttribute("statusMessage");
 		%>
+		<nav class="navbar navbar-default">
+			<div class="container-fluid">
+		    	<div class="navbar-form navbar-left">
+		      		<h3>You're authenticated as <%=login %></h3>
+		      	</div>
+	      		<div class="navbar-text navbar-right">
+		      		<form method="link" action="/LeaveManagement/DeconnexionServlet">
+		    			<input class="form-control" type="submit" value="Logout"/>
+					</form>
+				</div>
+		  	</div>
+		</nav>
+		
+		<div class="container">
+		   <div class="row">
+		   		<div class="col-md-offset-5 col-md-4" style="margin-top: 10%;">
+		   			<% if(booked){ %>
+		   			<div class="alert alert-success" role="alert">
+		   				<p><%=statusMessage %><a href='/LeaveManagement/Conges/demandeConge.jsp'><br/>Set another day.</a></p>
+		   			</div>
+		   			<%}
+		   			else{
+		   				%>
+		   				<div class="alert alert-danger" role="alert">
+		   					<p><%=statusMessage %><a href='/LeaveManagement/Conges/demandeConge.jsp'><br/>Try again.</a></p>
+		   				</div>
+		   				<%
+		   			}
+		   			%>
+				</div>
+			</div>
+		</div>
 	</body>
 </html>
