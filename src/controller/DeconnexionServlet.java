@@ -31,8 +31,9 @@ public class DeconnexionServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		 
-		deleteCookie(request, response);
-	    deleteCookie(request, response);
+		//age 0 pour un cookie le détruit
+		setCookie(response, this.COOKIE_CONNEXION_PWD, "", 0);
+		setCookie(response, this.COOKIE_CONNEXION_LOGIN, "", 0);
 		
 	    /* Récupération et destruction de la session en cours */
         HttpSession session = request.getSession();
@@ -42,17 +43,17 @@ public class DeconnexionServlet extends HttpServlet {
         /* Redirection vers l'index */
         response.sendRedirect( "/LeaveManagement/Employes/index.jsp" );
 	}
+	private static void setCookie(HttpServletResponse response, String nom, String valeur, int maxAge) {
 
-	private static void deleteCookie( HttpServletRequest request, HttpServletResponse response) {
-		Cookie[] cookies = request.getCookies();
-	    if (cookies != null)
-	        for (int i = 0; i < cookies.length; i++) {
-	            cookies[i].setValue("");
-	            cookies[i].setPath("/");
-	            cookies[i].setMaxAge(0);
-	            response.addCookie(cookies[i]);
-	        }
-    }
+		Cookie cookie = new Cookie(nom, valeur);
+
+		cookie.setMaxAge(maxAge);
+
+		response.addCookie(cookie);
+
+	}
+
+	
 	
 
 }
