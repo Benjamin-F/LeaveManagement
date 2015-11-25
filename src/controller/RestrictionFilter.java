@@ -8,6 +8,7 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -19,6 +20,8 @@ import javax.servlet.http.HttpSession;
 public class RestrictionFilter implements Filter {
 
     private static final String ATT_SESSION_USER = "sessionUtilisateur";
+    public static final String COOKIE_CONNEXION_LOGIN= "conl";
+    public static final String COOKIE_CONNEXION_PWD = "conpwd";
 
 	/**
      * Default constructor. 
@@ -39,17 +42,19 @@ public class RestrictionFilter implements Filter {
 	 */
 	public void doFilter(ServletRequest req, ServletResponse res, FilterChain chain) throws IOException, ServletException {
 		 HttpServletRequest request = (HttpServletRequest) req;
-
-	        HttpServletResponse response = (HttpServletResponse) res;
-	        HttpSession session= request.getSession();
-			if (session.getAttribute(ATT_SESSION_USER)==null) {
-				response.sendRedirect("/LeaveManagement/Employes/index.jsp");
-				
+		 
+        HttpServletResponse response = (HttpServletResponse) res;
+        HttpSession session= request.getSession();
+		if (session.getAttribute(ATT_SESSION_USER)==null && AuthentificationServlet.getCookieValue(request, this.COOKIE_CONNEXION_LOGIN)==null) {
+			response.sendRedirect("/LeaveManagement/Employes/index.jsp");
+		}
+		else{
+			if(session.getAttribute(ATT_SESSION_USER)==null){
+				String login = AuthentificationServlet.getCookieValue(request, this.COOKIE_CONNEXION_LOGIN);
+				session.setAttribute(this.ATT_SESSION_USER, login);
 			}
-			else{
-				chain.doFilter(request, response);
-			}
-		
+			chain.doFilter(request, response);
+		}
 	}
 
 	/**

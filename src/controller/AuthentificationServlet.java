@@ -106,8 +106,8 @@ public class AuthentificationServlet extends HttpServlet {
 		
 		//On vérifie les infos de connexions
 		if (credential) {
-
 			session.setAttribute(this.ATT_SESSION_USER, login);
+			session.setMaxInactiveInterval(50);
 
 			response.sendRedirect("/LeaveManagement/Conges/demandeConge.jsp");
 
@@ -131,26 +131,18 @@ public class AuthentificationServlet extends HttpServlet {
 		response.addCookie(cookie);
 
 	}
-	 private static String getCookieValue( HttpServletRequest request, String nom ) {
-
-	        Cookie[] cookies = request.getCookies();
-
-	        if ( cookies != null ) {
-
-	            for ( Cookie cookie : cookies ) {
-
-	                if ( cookie != null && nom.equals( cookie.getName() ) ) {
-
-	                    return cookie.getValue();
-
-	                }
-
-	            }
-
-	        }
-
-	        return null;
-
-	    }
+	
+	public static String getCookieValue( HttpServletRequest request, String nom ) {
+    	Cookie[] cookies = request.getCookies();
+    	
+        if ( cookies != null ) {
+            for ( Cookie cookie : cookies ) {
+                if ( cookie != null && nom.equals( cookie.getName() ) ) {
+                    return cookie.getValue();
+                }
+            }
+        }
+        return null;
+    }
 
 }
