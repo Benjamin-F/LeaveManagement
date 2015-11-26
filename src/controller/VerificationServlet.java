@@ -58,7 +58,7 @@ public class VerificationServlet extends HttpServlet {
 		Boolean availability = false;
 		int dayNumber = 0;
 		
-		//Convert birth date to Date format
+		//Convert date to Date format
 		String leaveD = request.getParameter("leaveDate");
 		DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
 		Date date = new Date();
